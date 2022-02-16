@@ -15,13 +15,15 @@ not abbandon the project due to unforeseeable circumstances (studies).
 
 ## Setup
 
-Since this project relies on [poetry](https://python-poetry.org/), you need this installed. The :code:`python` version used is :code:`3.10.2`. You need to have that installed before installing all dependencies with:
+Since this project relies on [poetry](https://python-poetry.org/), you need this installed. The `python`
+version used is `3.10.2`. You need to have that installed before installing all dependencies with:
 
 ```bash
 poetry install
 ```
 
-The GraphQL API itself uses [strawberry](https://strawberry.rocks) and for now its developement server. You can start it with
+The GraphQL API itself uses [strawberry](https://strawberry.rocks) and for now its developement server.
+You can start it with:
 
 ```bash
 poetry run strawberry server queen_api.main:schema
