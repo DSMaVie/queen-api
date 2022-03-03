@@ -1,6 +1,6 @@
 import strawberry
 
-from queen_api.graphql.types import Event
+from queen_api.gql.types import Event
 
 
 @strawberry.type
