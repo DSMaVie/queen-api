@@ -13,7 +13,10 @@ queryParams = ParamSpec("queryParams")
 class QueryHandler:
     def __init__(self, conf: Config) -> None:
         self.__client = AsyncIOMotorClient(
-            host=conf.DB_HOST, port=conf.DB_PORT, username="root", password="example"
+            host=conf.DB_HOST,
+            port=conf.DB_PORT,
+            username=conf.DB_USER,
+            password=conf.DB_PASS,
         )
         self.__client.get_io_loop = asyncio.get_running_loop
 
