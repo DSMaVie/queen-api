@@ -3,7 +3,7 @@ import uvicorn
 from queen_api import gql
 from dotenv import dotenv_values, find_dotenv
 from queen_api.config import Config
-from server import QueenApiServer
+from queen_api.server import QueenApiServer
 
 
 def get_config():
