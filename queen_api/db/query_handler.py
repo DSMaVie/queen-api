@@ -22,7 +22,7 @@ class QueryHandler:
     async def handle(
         self,
         query: Callable[
-            Concatenate[AsyncIOMotorClientSession, AsyncIOMotorDatabase, queryParams],
+            Concatenate[AsyncIOMotorClientSession, queryParams],
             Awaitable[Any],
         ],
         *args: queryParams.args,
@@ -31,11 +31,7 @@ class QueryHandler:
         print(f"starting sesh in loop {asyncio.get_running_loop()}")
         async with await self.__client.start_session() as sesh:
             print(f"received {query=}")
-            return sesh.with_transaction(
-                lambda s: query(
-                    s, self.__client.get_default_database(), *args, **kwargs
-                )
-            )
+            return sesh.with_transaction(lambda s: query(s, *args, **kwargs))
 
     # TODO: validate query
     # TODO: logging!!!!!
