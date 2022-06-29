@@ -1,16 +1,20 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, validator
-
+from pydantic import BaseModel
 from queen_api.models.utils import AdChannels
 
 
 class DbEntry(BaseModel):
+    """a model every database entry can subclass from. just supplies an id."""
+
     id: str
 
 
 class EventInfo(BaseModel):
+    """for subclassing. contains the general info of an event, either in template
+    or timed form."""
+
     name: str
     description: Optional[str] = None
     assignee: Optional[str] = None
@@ -22,40 +26,47 @@ class EventInfo(BaseModel):
     class Config:
         use_enum_values = True
 
-    @validator
-    def parse_ad_channels(cls, ad_channels):
-        match type(ad_channels):
-            case str:
-                if ad_channels not in (channel.name for channel in AdChannels):
-                    raise ValueError(
-                        f"{ad_channels=} must be an appropriate ad_channel!"
-                    )
-                return AdChannels[ad_channels]
+    # @validator("ad_channels")
+    # def parse_ad_channels(cls, ad_channels):
+    #     match ad_channels:
+    #         case str():
+    #             if ad_channels not in (channel.name for channel in AdChannels):
+    #                 raise ValueError(
+    #                     f"{ad_channels=} must be an appropriate ad_channel!"
+    #                 )
+    #             return AdChannels[ad_channels]
 
-            case int:
-                if ad_channels not in AdChannels:
-                    raise ValueError(
-                        f"{ad_channels=} must be an appropriate ad_channel!"
-                    )
-                return AdChannels(ad_channels)
+    #         case int():
+    #             if ad_channels not in AdChannels:
+    #                 raise ValueError(
+    #                     f"{ad_channels=} must be an appropriate ad_channel!"
+    #                 )
+    #             return AdChannels(ad_channels)
 
-            case AdChannels:
-                return ad_channels
+    #         case AdChannels():
+    #             return ad_channels
 
-            case _:
-                raise ValueError(f"unknown value for {ad_channels=}")
+    #         case _:
+    #             raise ValueError(f"unknown value for {ad_channels=}")
 
-        # why is this not working
+    #     # TODO: catch case of composed Ad Channels?
 
 
-class TimedEntry(BaseModel):
+class EventTimed(BaseModel):
+    """this model describes an event that has a start and end time. this does not exist
+    for template events (later)."""
+
     start: datetime
     end: Optional[datetime] = None
 
 
-class Event(DbEntry, EventInfo, TimedEntry):
+class Event(DbEntry, EventInfo, EventTimed):
+    """This model describes an entire event, that has been saved in the database."""
+
     pass
 
 
-class InputEvent(EventInfo, TimedEntry):
+class InputEvent(EventInfo, EventTimed):
+    """This class shows how the data comming from the frontend looks like."""
+
     pass
