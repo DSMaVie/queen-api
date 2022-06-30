@@ -23,7 +23,7 @@ class HandleQuery:
         self.__client.get_io_loop = asyncio.get_running_loop
         logger.info("finished initializing database connection.")
 
-    async def __call__(
+    def __call__(
         self,
         query: Callable[
             Concatenate[AsyncIOMotorClientSession, queryParams],

@@ -1,4 +1,11 @@
+from dotenv import dotenv_values, find_dotenv
 from pydantic import BaseModel
+
+
+def get_config():
+    dotenv_path = find_dotenv(".env")
+    return Config(**dotenv_values(dotenv_path))  # type: ignore
+    # we want to fail on None so we disallow it with type hints
 
 
 class Config(BaseModel):
@@ -14,3 +21,5 @@ class Config(BaseModel):
     SERVER_PORT: int
 
     DEBUG: bool
+
+    # type guard/not None validation!
